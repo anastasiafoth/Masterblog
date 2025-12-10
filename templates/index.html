@@ -13,8 +13,14 @@
             <h2>{{ post['title'] }}</h2>
             <p><em>{{ post['author'] }}</em></p>
             <p>{{ post['content'] }}</p>
+
+        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
+            <input type="submit" value="Delete">
+        </form>
         </div>
+
     {% endfor %}
+    <br>
     <a href="{{ url_for('add') }}">Let's add a new post!</a>
 </body>
 </html>
