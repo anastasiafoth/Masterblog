@@ -26,6 +26,10 @@ def index():
     return render_template('index.html', posts=blog_posts)
 
 
+def writing_files(blog_posts):
+    with open(BLOG_POSTS_FILE, 'w') as fileobj:
+        json.dump(blog_posts, fileobj, indent=4)
+
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
@@ -54,8 +58,7 @@ def add():
                     "content": request.form['content']
                 }]
 
-            with open(BLOG_POSTS_FILE, 'w') as fileobj:
-                json.dump(blog_posts, fileobj, indent=4)
+            writing_files(blog_posts)
 
             return redirect(url_for('index'))
         except Exception as e:
@@ -77,8 +80,7 @@ def delete_post(post_id):
             if post_id != post['id']:
                 blog_posts_new.append(post)
 
-        with open(BLOG_POSTS_FILE, 'w') as fileobj:
-            json.dump(blog_posts_new, fileobj, indent=4)
+        writing_files(blog_posts_new)
 
         print("The post was successfully deleted.")
         return redirect(url_for('index'))
@@ -86,6 +88,59 @@ def delete_post(post_id):
     except Exception as e:
         print(f"Error deleting post: {e}")
         return "Error deleting post", 500
+
+
+def fetch_post_by_id(post_id):
+    blog_posts = reading_file()
+    for post in blog_posts:
+        if post['id'] == post_id:
+            return post
+    return None
+
+
+@app.route('/update/<int:post_id>', methods=['GET','POST'])
+def update_post(post_id):
+    """ Updates a blogpost """
+    # Fetch the blog posts from the JSON file
+    post = fetch_post_by_id(post_id)
+
+    if post is None:
+        # Post not found
+        return "Post not found", 404
+
+    if request.method == 'POST':
+        try:
+            # Get updated data from form
+            updated_post = {
+                'id' : post_id,
+                'author' : request.form.get('author', ''),
+                'title' : request.form.get('title', ''),
+                'content' : request.form.get('content', '')
+            }
+
+            # Read all posts
+            blog_posts = reading_file()
+
+            # Update the post in the JSON file
+            new_blog_posts = []
+            for p in blog_posts:
+                if p['id'] == post_id:
+                    new_blog_posts.append(updated_post)
+                else:
+                    new_blog_posts.append(p)
+
+            writing_files(new_blog_posts)
+
+            # Redirect back to index
+            return redirect(url_for('index'))
+
+        except Exception as e:
+            print(f"Error updating post: {e}")
+            return "Error updating post", 500
+
+    # GET request displays the update.html page
+    return render_template('update.html', post=post)
+
 
 
 if __name__ == '__main__':

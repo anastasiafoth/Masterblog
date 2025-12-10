@@ -17,6 +17,10 @@
         <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
             <input type="submit" value="Delete">
         </form>
+        <form action="{{ url_for('update_post', post_id=post.id) }}" method="GET" style="display:inline;">
+            <input type="submit" value="Update">
+        </form>
+
         </div>
 
     {% endfor %}
