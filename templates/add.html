@@ -1,0 +1,30 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Do you want to add a new blog post? Come on, don´t be shy!</h1>
+        <form action="/add" method="POST">
+        <div class="form-row">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="author" required>
+        </div>
+
+        <div class="form-row">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+
+        <div class="form-row">
+            <label for="content">Write to your heart content:</label>
+            <br>
+            <textarea id="content" name="content" rows="10" required></textarea>
+        </div>
+
+            <input type="submit" value="Submit">
+        </form>
+</body>
+</html>

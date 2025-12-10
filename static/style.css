@@ -25,3 +25,44 @@ h1 {
 .post p {
     margin: 10px 0;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+label {
+    font-weight: 500;
+}
+
+
+input[type="text"],
+textarea {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: white;
+    transition: border 0.2s ease;
+}
+
+/* Submit-Button */
+input[type="submit"] {
+    width: 130px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #333;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+/* Hover-Effekt */
+input[type="submit"]:hover {
+    background-color: #555;
+}
